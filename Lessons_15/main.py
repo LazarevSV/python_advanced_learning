@@ -41,7 +41,6 @@ if __name__ == '__main__':
     # Проверка работы модуля dir_info в IDE
     # pprint(dir_info(r'C:\Users'))
 
-    # Проверка работы модуля dir_info в командной строке
-    # python Seminar15/home01.py -p C:\Users\Zareff\Desktop\Learning\Python\DeepLearning\Seminar10
+  
 
     pprint(parser())
