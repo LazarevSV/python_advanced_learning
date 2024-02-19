@@ -1,0 +1,218 @@
+Команда try
+Для перехвата ошибок создают блоки try
+ ...
+ try:
+ # отлавливаем ошибки
+ ...
+ # продолжаем нормальную работу
+ ...
+
+
+****************
+Команда except
+
+except — обязательный блок кода после try.
+Отвечает за обработку исключения.
+ ...
+ try:
+ # отлавливаем ошибки
+ ...
+ except NameError as e:
+ # действия при перехвате ошибки NameError
+ ...
+ # продолжаем нормальную работу
+ ...
+
+
+ **********
+ Команда else
+
+Дополнительные действия можно указать в блоке else.
+
+Блок else не сработает, если внутри try произошло любое из событий:
+
+возбуждено исключение
+выполнена команда return
+выполнена команда break
+выполнена команда continue
+
+************
+
+
+Команда finally
+
+Блок finally выполняется в любом случае
+ ...
+ try:
+ # отлавливаем ошибки
+ ...
+ except NameError as e:
+ # действия при перехвате ошибки NameError
+ ...
+ finally:
+ # выполняется в любом случае
+ ...
+ # продолжаем нормальную работу
+ ...
+
+ **************
+
+ПРИМЕР
+
+Обработка исключительных ситуаций
+d = {'42': 73}
+try:
+ key, value = input('Ключ и значение: ').split()
+ if d[key] == value:
+ r = 'Совпадение'
+except ValueError as e:
+ print(e)
+except KeyError as e:
+ print(e)
+else:
+ print(r)
+finally:
+ print(d)
+
+
+
+
+ >>> Ключ и значение: 42 13      else: print(r)   получим ошибку не существующей R так как не присоили R
+>>> Ключ и значение: 42 73 3   ValueError
+>>> Ключ и значение: 73 42      KeyError
+>>> Ключ и значение: 42 73        73 в нашем словаре число а при вводе строка и  ловим искл ситуацию и обращение к несуществующей
+
+
+*************
+
+
+Иерархия исключений
+BaseException
+ ├── BaseExceptionGroup
+ ├── GeneratorExit
+ ├── KeyboardInterrupt
+ ├── SystemExit
+ └── Exception
+
+
+ Иерархия исключений
+ └── Exception
+ ├── ArithmeticError
+ │ ├── FloatingPointError
+ │ ├── OverflowError
+ │ └── ZeroDivisionError
+ ├── AssertionError
+ ├── AttributeError
+ ├── BufferError
+ ├── EOFError
+ ├── ExceptionGroup [BaseExceptionGroup]
+ ├── ImportError
+ │ └── ModuleNotFoundError
+ ├── LookupError
+ │ ├── IndexError
+ │ └── KeyError
+ ├── MemoryError
+ ├── NameError
+ │ └── UnboundLocalError
+
+
+
+Иерархия исключений
+ └── Exception
+ ├── OSError
+ │ ├── BlockingIOError
+ │ ├── ChildProcessError
+ │ ├── ConnectionError
+ │ │ ├── BrokenPipeError
+ │ │ ├── ConnectionAbortedError
+ │ │ ├── ConnectionRefusedError
+ │ │ └── ConnectionResetError
+ │ ├── FileExistsError
+ │ ├── FileNotFoundError
+ │ ├── InterruptedError
+ │ ├── IsADirectoryError
+ │ ├── NotADirectoryError
+ │ ├── PermissionError
+ │ ├── ProcessLookupError
+ │ └── TimeoutError
+
+
+Иерархия исключений
+ └── Exception
+ ├── ReferenceError
+ ├── RuntimeError
+ │ ├── NotImplementedError
+ │ └── RecursionError
+ ├── StopAsyncIteration
+ ├── StopIteration
+ ├── SyntaxError
+ │ └── IndentationError
+ │ └── TabError
+ ├── SystemError
+ ├── TypeError
+ ├── ValueError
+ │ └── UnicodeError
+ │ ├── UnicodeDecodeError
+ │ ├── UnicodeEncodeError
+ │ └── UnicodeTranslateError
+Погружение в Python | Исключения
+Иерархия исключений
+ └── Exception
+ └── Warning
+ ├── BytesWarning
+ ├── DeprecationWarning
+ ├── EncodingWarning
+ ├── FutureWarning
+ ├── ImportWarning
+ ├── PendingDeprecationWarning
+ ├── ResourceWarning
+ ├── RuntimeWarning
+ ├── SyntaxWarning
+ ├── UnicodeWarning
+ └── UserWarning
+
+
+ ****************
+
+ Кот может самостоятельно поднимать исключения
+Команда raise позволяет программисту
+принудительно вызвать указанное исключение
+● после raise необходимо указать класс
+исключения
+● класс может принять поясняющий текст
+исключения в качестве аргумента
+
+
+
+Ключевое слово raise
+def func(a, b, c):
+ if a < b < c:
+ raise ValueError('Не перемешано!')
+ elif sum((a, b, c)) == 42:
+ raise NameError('Это имя занято!')
+ elif max(a, b, c, key=len) < 5:
+ raise MemoryError('Слишком глуп!')
+ else:
+ raise RuntimeError('Что-то не так!!!')
+
+
+
+func(11, 7, 3) # 1
+func(3, 2, 3) # 2
+func(73, -40, 9) # 3   NameError('Это имя занято!')
+func(10, 20, 30) # 4   ValueError('Не перемешано!')
+
+
+
+***************
+
+Создание собственных исключений
+Разработчик может создавать свои классы исключения
+● Исключение не должно дублировать стандартное исключение
+● Собственные исключения наследуются от класса Exception
+○ Если исключений несколько, создают собственное
+родительское исключение от Exception. Остальные
+исключения наследуются от него.
+● Для исключения достаточно определить два дандер метода:
+○ __init__
+○ __str__

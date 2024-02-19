@@ -1,0 +1,266 @@
+1.Создание экземпляра класса, __init__
+
+Объект созданный в результате вызова класса
+называется его экземпляром
+Погружение в Python | ООП. Особенности Python
+def __init__(self, *args, **kwargs):
+ self.param = args
+
+*************
+Контроль создания класса через __new__
+
+Метод __new__ срабатывает в момент создания
+класса и может его изменить
+
+● Расширение неизменяемых классов
+● Шаблон Одиночка, Singleton
+● Другие модификации, метапрограммирование
+
+************************************************
+
+Удаление экземпляра класса, __del__
+
+Погружение в Python | ООП. Особенности Python
+Команда del не удаляет объект, а уменьшает
+счётчик ссылок объекта.
+
+Дандер метод del срабатывает при достижении
+счётчиком ссылок нуля. Выполняет перед удалением
+объекта из памяти сборщиком мусора.
+
+
+*******************************
+шаблон одиночка
+Создание и удаление
+class Count:
+ _count = 0
+ _last = None
+
+ def __new__(cls, *args, **kwargs):
+     if cls._count < 3:
+ cls._last = super().__new__(cls)
+ cls._count += 1
+ return cls._last
+
+ def __init__(self, name: str):
+ self.name = name
+
+
+ **********************
+
+ Строка документации
+
+Наличие строк документации у классов, методов и функций — хороший тон
+Погружение в Python | ООП. Особенности Python
+● help(instance) — справка на основе структуры класса включает
+документацию
+● instance.__doc__ — обращение к документации объекта напрямую
+
+
+*********************
+
+Представление для пользователя, __str__
+
+class Person:
+ ...
+ def __str__(self):
+ ...
+ return 'Текст для пользователя'
+Погружение в Python | ООП. Особенности Python
+Функция print ищет __str__ для вывода информации
+
+
+*******************
+
+
+Представление для создания экземпляра, __repr__
+
+class Person:
+ ...
+ def __repr__(self):
+ ...
+ return f'Person({self.param} )'
+
+
+************
+
+Приоритет методов
+
+Варианты срабатывания __str__ и __repr__
+● print(user)
+__str__
+
+● print(f'{user}')
+__str__
+
+● print(repr(user))
+__repr__
+
+● print(f'{user = }')
+__repr__
+
+● print(collections)
+__repr__
+
+
+***************
+
+Переопределение
+
+Операция в Python   Основной метод   Right метод    In place метод
+
++    __add__(self, other)    __radd__(self, other)    __iadd__(self, other)
+-    __sub__(self, other)    __rsub__(self, other)    __isub__(self, other)
+*    __mul__(self, other)    __rmul__(self, other)    __imul__(self, other)
+@    __matmul__(self, other) __rmatmul__(self, other) __imatmul__(self, other)
+/    __truediv__(self, other) __rtruediv__(self, other) __itruediv__(self, other)
+//    __floordiv__(self, other) __rfloordiv__(self, other) __ifloordiv__(self, other)
+%    __mod__(self, other) __rmod__(self, other) __imod__(self, other)
+divmod() __divmod__(self, other) __rdivmod__(self, other) __idivmod__(self, other)
+**, pow() __pow__(self, other[,modulo]) __rpow__(self, other[,modulo]) __ipow__(self, other[,modulo])
+<<    __lshift__(self, other) __rlshift__(self, other) __ilshift__(self, other)
+>>    __rshift__(self, other) __rrshift__(self, other) __irshift__(self, other)
+&    __and__(self, other) __rand__(self, other) __iand__(self, other)
+^    __xor__(self, other) __rxor__(self, other) __ixor__(self, other)
+|    __or__(self, other) __ror__(self, other) __ior__(self, other)
+
+
+
+************
+
+
+Основные методы
+
+Левый объект вызывает свой метод и возвращает
+новый экземпляр класса
+Погружение в Python | ООП. Особенности Python
+class Name:
+ ...
+ def __add__(self, other):
+ ...
+ return Name(param)
+c = a + b
+
+
+
+************
+
+
+
+Right методы
+
+
+Погружение в Python | ООП. Особенности Python
+Левый объект не находит нужный метод, поэтому правый объект
+вызывает свой метод и возвращает новый экземпляр класса
+class Name:
+ ...
+ def __radd__(self, other):
+ ...
+ return Name(param)
+c = b + a
+
+****************************
+
+
+In place методы
+
+Погружение в Python | ООП. Особенности Python
+Объект вызывает свой метод и изменяет своё значение
+class Name:
+ ...
+ def __iadd__(self, other):
+ ...
+ return self
+a += b
+
+**********************
+
+
+Сравнение экземпляров класса
+
+Python поддерживает определение шести основных операций
+сравнения экземпляров
+● __eq__ - равно, ==
+● __ne__ - не равно, !=
+● __gt__ - больше, >
+● __ge__ - не больше, меньше или равно, <=
+● __lt__ - меньше, <
+● __le__ - не меньше, больше или равно, >=
+
+
+*************
+
+
+Получение значения атрибута, __getattribute__
+
+Погружение в Python | ООП. Особенности Python
+Дандер __getattribute__ вызывается при любой попытке
+обращения к атрибутам экземпляра
+class Name:
+ ...
+ def __getattribute__(self, item):
+ ...
+ return object.__getattribute__(self, item)
+
+
+***********************
+
+
+
+
+Присвоение атрибуту значения, __setattr__
+
+
+Погружение в Python | ООП. Особенности Python
+Дандер __setattr__ срабатывает каждый раз,
+когда в коде есть операция присвоения
+class Name:
+ ...
+ def __setattr__(self, key, value):
+ ...
+ return object.__setattr__(self, key, value)
+
+ *************************
+
+
+ Обращение к несуществующему атрибуту, __getattr__
+
+
+Погружение в Python | ООП. Особенности Python
+Если свойство отсутствует, в первую очередь вызывается дандер
+__getattribute__. В случае возврата им ошибки AttributeError
+вызывается метод __getattr__
+class Name:
+ ...
+ def __getattr__(self, item):
+ ...
+ return ...
+
+
+ ******************
+
+
+
+ Удаление атрибута, __delattr__
+
+
+
+Погружение в Python | ООП. Особенности Python
+Дандер __delattr__ вызывается при попытке удалить
+атрибут командой del
+class Name:
+ ...
+ def __delattr__(self, item):
+ ...
+ object.__delattr__(self, item)
+
+ ***************
+
+ Функции setattr(), getattr() и delattr()
+setattr(object, name, value)
+аналог object.name = value
+getattr(object, name[, default])
+аналог object.name or default
+delattr(object, name)
+аналог del object.name
