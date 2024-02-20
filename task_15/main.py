@@ -39,8 +39,11 @@ def parser():
     return dir_info(f'{args.path}')
 
 if __name__ == '__main__':
-    # Проверка работы модуля dir_info в IDE
+   # Проверка работы модуля dir_info в IDE
     # pprint(dir_info(r'C:\Users'))
+
+    # Проверка работы модуля dir_info в командной строке
+    # python task_15/main.py -p E:\DCDownloads\GeekBrains\python\task_15
 
 
 
